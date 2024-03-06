@@ -3,7 +3,16 @@ print("""
     (1-Domingo, 2- Segunda, etc.), se digitar outro valor deve aparecer valor inválido.
 """)
 # 
-dia = int(input("Informe um número(1 - 7): "))
+controle = True
+
+while controle:
+    dia = int(input("Informe um número(1 - 7): "))
+    
+    if dia < 0 or dia > 7:
+        print("Ops! Algo está errado. Tente novamente... \n")
+    else:
+        controle = False
+
 
 def dia_semana(dia):
     if dia == 1:

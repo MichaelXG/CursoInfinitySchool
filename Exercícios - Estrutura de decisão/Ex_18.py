@@ -6,6 +6,7 @@ data = input('Informe uma data DD-MM-YYYY: ')
 
 def valida_data(data_v):
     dia, mes, ano = map(int, data.split('-'))
+    bissexto = False
     
     if (ano % 4 == 0):
         bissexto = True
