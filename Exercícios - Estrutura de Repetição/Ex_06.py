@@ -2,9 +2,8 @@ print("""
     6. 
 """)
 
-X = 10
-Y = 20
-Z = 30
+x=10
 
-soma = X + Y + Z
-print("as smoas,", soma)
+if x < 5
+
+    print("True")
