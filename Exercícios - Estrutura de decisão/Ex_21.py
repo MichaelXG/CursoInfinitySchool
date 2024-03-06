@@ -31,12 +31,13 @@ valor_saque = valor_saque % 2
 notas_1 = valor_saque // 1
 valor_saque = valor_saque % 1
 
-
-
-
-
-
-
 print('#---------------------------------------------------#')
-print(f'O maior número é {"{:.2f}".format(maior)} \n')
+print(f'Notas de  R$ 100 :{"{:.2f}".format(notas_100)}')
+print(f'Notas de  R$  50 :{"{:.2f}".format(notas_50)}')
+print(f'Notas de  R$  20 :{"{:.2f}".format(notas_20)}')
+print(f'Notas de  R$  10 :{"{:.2f}".format(notas_10)}')
+print(f'Notas de  R$   5 :{"{:.2f}".format(notas_5)}')
+print(f'Notas de  R$   2 :{"{:.2f}".format(notas_2)}')
+print(f'Notas de  R$   1 :{"{:.2f}".format(notas_1)}')
+
 print('#---------------------------------------------------#')
