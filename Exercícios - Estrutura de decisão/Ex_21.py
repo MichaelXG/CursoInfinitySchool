@@ -39,5 +39,4 @@ print(f'Notas de  R$  10 :{"{:.2f}".format(notas_10)}')
 print(f'Notas de  R$   5 :{"{:.2f}".format(notas_5)}')
 print(f'Notas de  R$   2 :{"{:.2f}".format(notas_2)}')
 print(f'Notas de  R$   1 :{"{:.2f}".format(notas_1)}')
-
 print('#---------------------------------------------------#')

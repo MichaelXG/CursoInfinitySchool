@@ -13,7 +13,6 @@ while controle:
     else:
         controle = False
 
-
 def dia_semana(dia):
     if dia == 1:
         return "Domingo"
