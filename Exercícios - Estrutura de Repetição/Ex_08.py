@@ -16,6 +16,6 @@ while controle != 5:
 media = soma / 5
     
 print('#-------------------------------------------------------#')
-print("Soma: ", soma)
+print(f'+ Soma: {"{:.2f}".format(soma)}')
 print(f'Média: {"{:.2f}".format(media)}')
 print('#-------------------------------------------------------#')

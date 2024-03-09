@@ -9,7 +9,7 @@ print("""
         5 X 10 = 50
 """)
 
-numero_tab = int(input('Informe o número para gerar a  tabuada: '))
+numero_tab = int(input('Informe o número para gerar a tabuada: '))
 
 valida_ope = True
  

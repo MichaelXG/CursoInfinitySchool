@@ -6,7 +6,6 @@ print("""
 # instalar para poder usar mascara ao digitar senhas
 import pwinput
 
-
 controle = True
 
 while controle:
