@@ -3,3 +3,15 @@
 ################################################################################
 
 /.vs
+*.pyc
+/PY - Python - SUPER/Aula06/pages/Tarefas/__pycache__/FormPesquisaTarefa.cpython-312.pyc
+/PY - Python - SUPER/Aula06/pages/Tarefas/__pycache__/FormTarefa.cpython-312.pyc
+/PY - Python - SUPER/Aula06/Controllers/__pycache__/PadraoController.cpython-312.pyc
+/GerenciadorTarefas/tarefas
+/PY - Python - SUPER/Aula08/Editing GerenciadorTarefas_main.py at master · MichaelXG_GerenciadorTarefas_files
+/PY - Python - SUPER/Provas/.provas
+/01 - Lógica_de_programação/Calculadora/calculadora/Lib/site-packages
+/01 - Lógica_de_programação/Calculadora/calculadora/etc/jupyter/nbconfig/notebook.d
+/01 - Lógica_de_programação/Calculadora/calculadora
+/02 - PY - Python - SUPER/Provas/.provas
+/02 - PY - Python - SUPER/Aula08/Editing GerenciadorTarefas_main.py at master · MichaelXG_GerenciadorTarefas_files
