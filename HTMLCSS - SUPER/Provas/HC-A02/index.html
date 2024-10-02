@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formulário de Cadastro</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script>
+      function validateForm() {
+        const checkboxes = document.querySelectorAll('input[name="interesse"]');
+        const checkedOne = Array.prototype.slice
+          .call(checkboxes)
+          .some((x) => x.checked);
+        if (!checkedOne) {
+          alert("Por favor, selecione pelo menos um interesse.");
+          return false;
+        }
+        return true;
+      }
+
+      function showModal() {
+        // Prevent form submission
+        event.preventDefault();
+
+        // Gather form data
+        const nome = document.getElementById("nome").value;
+        const senha = document.getElementById("senha").value;
+        const email = document.getElementById("email").value;
+        const interesses = Array.from(
+          document.querySelectorAll('input[name="interesse"]:checked')
+        )
+          .map((checkbox) => checkbox.value)
+          .join(", ");
+        const genero =
+          document.querySelector('input[name="genero"]:checked')?.value ||
+          "Não selecionado";
+
+        // Set data in modal
+        document.getElementById("modal-nome").innerText = `Nome: ${nome}`;
+        document.getElementById("modal-senha").innerText = `Senha: ${senha}`;
+        document.getElementById("modal-email").innerText = `E-mail: ${email}`;
+        document.getElementById(
+          "modal-interesses"
+        ).innerText = `Interesses: ${interesses}`;
+        document.getElementById("modal-genero").innerText = `Gênero: ${genero}`;
+
+        // Show the modal
+        document.getElementById("modal").style.display = "block";
+      }
+
+      function closeModal() {
+        document.getElementById("modal").style.display = "none";
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Cabeçalho do formulário -->
+    <header>
+      <h1>Formulário de Cadastro</h1>
+    </header>
+
+    <!-- Formulário de cadastro -->
+    <main>
+      <form action="#" method="post" onsubmit="showModal()">
+        <!-- Campo de texto para o usuário inserir informações -->
+        <label for="nome">Nome:</label><br />
+        <input type="text" id="nome" name="nome" required /><br /><br />
+
+        <!-- Campo do tipo password para o usuário inserir apenas senhas -->
+        <label for="senha">Senha:</label><br />
+        <input type="password" id="senha" name="senha" required /><br /><br />
+
+        <!-- Campo de e-mail para o usuário inserir um endereço de e-mail válido -->
+        <label for="email">E-mail:</label><br />
+        <input type="email" id="email" name="email" required /><br /><br />
+
+        <!-- Lista com 5 checkboxes para o usuário selecionar mais de uma opção -->
+        <label>Interesses:</label><br />
+        <div class="interesses">
+          <input
+            type="checkbox"
+            id="interesse1"
+            name="interesse"
+            value="Tecnologia"
+          />
+          <label for="interesse1">Tecnologia</label>
+
+          <input
+            type="checkbox"
+            id="interesse2"
+            name="interesse"
+            value="Esportes"
+          />
+          <label for="interesse2">Esportes</label>
+
+          <input
+            type="checkbox"
+            id="interesse3"
+            name="interesse"
+            value="Música"
+          />
+          <label for="interesse3">Música</label>
+
+          <input
+            type="checkbox"
+            id="interesse4"
+            name="interesse"
+            value="Viagens"
+          />
+          <label for="interesse4">Viagens</label>
+
+          <input
+            type="checkbox"
+            id="interesse5"
+            name="interesse"
+            value="Leitura"
+          />
+          <label for="interesse5">Leitura</label>
+        </div>
+        <br />
+
+        <!-- Radiobutton com 2 opções, onde apenas uma pode ser selecionada por vez -->
+        <label>Gênero:</label><br />
+        <div class="genero">
+          <input
+            type="radio"
+            id="masculino"
+            name="genero"
+            value="Masculino"
+            required
+          />
+          <label for="masculino">Masculino</label>
+
+          <input
+            type="radio"
+            id="feminino"
+            name="genero"
+            value="Feminino"
+            required
+          />
+          <label for="feminino">Feminino</label>
+        </div>
+        <br />
+
+        <!-- Botão de envio para enviar as informações do formulário -->
+        <button type="submit">Enviar</button>
+
+        <!-- Botão para limpar o formulário e começar novamente -->
+        <button type="reset">Limpar</button>
+      </form>
+    </main>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Dados do Formulário</h2>
+        <p id="modal-nome"></p>
+        <p id="modal-senha"></p>
+        <p id="modal-email"></p>
+        <p id="modal-interesses"></p>
+        <p id="modal-genero"></p>
+      </div>
+    </div>
+
+    <footer>H/C-A02</footer>
+  </body>
+</html>

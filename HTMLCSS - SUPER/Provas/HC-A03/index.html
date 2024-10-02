@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calendário com Agendamentos e Feriados</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Kanit:300,700"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Arimo:400,400i,700,700i|IBM+Plex+Sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i|Lato:100,100i,300,300i,400,400i,700,700i,900,900i|Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i|Ramabhadra"
+      rel="stylesheet"
+    />
+    <!--<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">-->
+    <link
+      rel="stylesheet"
+      href="https://anandchowdhary.github.io/ionicons-3-cdn/icons.css"
+      integrity="sha384-+iqgM+tGle5wS+uPwXzIjZS5v6VkqCUV7YQ/e/clzRHAxYbzpUJ+nldylmtBWCP0"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <div class="calendar-left">
+        <div class="menu">
+          <div class="menu-toggle">
+            <div>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+
+          <div class="custom-select" id="custom-select">
+            <div class="select-selected">
+              <span class="flag-icon flag-icon-br"></span> Brazil
+            </div>
+            <div class="select-items">
+              <!-- Options will be added dynamically here -->
+            </div>
+          </div>
+        </div>
+
+        <div class="num-date" id="num-date">XX</div>
+        <div class="day" id="day">SEMANA</div>
+        <hr class="event-line" />
+
+        <div class="current-events">
+          <div>Feriados</div>
+          <ul>
+            <!-- Eventos atuais serão carregados aqui -->
+          </ul>
+          <!-- <span class="posts">Ver pós-eventos</span> -->
+        </div>
+        <hr class="event-line" />
+        <div class="current-events">
+          <div>Eventos</div>
+          <div class="event-list" id="event-list">
+            <li>
+              <!-- Eventos atuais serão carregados aqui -->
+            </li>
+          </div>
+        </div>
+        <hr class="event-line" />
+
+        <div class="create-event">
+          <button type="button" class="add-event-button" id="add-event-button">
+            <span class="add-event-button__title">Add Evento</span>
+
+            <span class="add-event-button__icon">
+              <i class="ion ion-ios-star-outline"></i>
+            </span>
+          </button>
+        </div>
+
+        <hr class="event-line" />
+      </div>
+
+      <div class="calendar-base">
+        <!-- Cabeçalho de navegação -->
+        <table id="calendar-year">
+          <thead>
+            <tr>
+              <td class="triangle-left" id="prev-year"></td>
+              <td class="year" id="year">XXXX</td>
+              <td class="triangle-right" id="next-year"></td>
+            </tr>
+          </thead>
+        </table>
+        <!-- Cabeçalho dos Meses -->
+        <table id="calendar-months">
+          <thead>
+            <tr class="month-row">
+              <!-- Os meses serão inseridos aqui dinamicamente -->
+            </tr>
+          </thead>
+        </table>
+
+        <!-- Cabeçalho dos Dias da Semana -->
+        <table id="calendar-header">
+          <thead>
+            <tr class="day-row">
+              <!-- Os dias da semana serão inseridos aqui dinamicamente -->
+            </tr>
+          </thead>
+        </table>
+
+        <!-- Corpo do Calendário -->
+        <table id="calendar-body">
+          <!-- O corpo do calendário será gerado aqui -->
+        </table>
+      </div>
+    </div>
+
+    <!-- Modal para visualizar e editar agendamentos -->
+    <div id="modal" class="modal">
+      <header class="modal-header">
+        <button class="close" id="cancel-btn">&times;</button>
+        <h4 class="modal-title">Detalhes do Agendamento</h4>
+      </header>
+
+      <div class="modal-body">
+        <div class="modal-content">
+          <div class="date-row">
+            <label for="date-start">Dt. Início:</label>
+            <input
+              type="date"
+              id="date-start"
+              placeholder="Data início evento"
+              required
+            />
+          </div>
+
+          <div class="date-row">
+            <label for="date-end">Dt. Fim:</label>
+            <input
+              type="date"
+              id="date-end"
+              placeholder="Data fim evento"
+              required
+            />
+          </div>
+
+          <div class="title-row">
+            <label for="title">Título:</label>
+            <input type="text" id="title" placeholder="Título do agendamento" />
+          </div>
+        </div>
+
+        <div class="modal-content">
+          <div class="description-row">
+            <label for="description">Descrição:</label>
+            <textarea
+              id="description"
+              placeholder="Descrição do agendamento"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="modal-content">
+          <div class="time-row">
+            <label for="time">Hora:</label>
+            <input type="time" id="time" />
+          </div>
+          <div class="alarm-row">
+            <label for="alarm">Definir Alarme:</label>
+            <input type="checkbox" id="alarm" />
+          </div>
+        </div>
+
+        <div class="modal-content">
+          <div class="cep-row">
+            <input
+              type="text"
+              id="cep"
+              placeholder="Digite o CEP"
+              maxlength="8"
+            />
+          </div>
+          <div>
+            <button
+              id="search-btn"
+              class="styled-button"
+              title="Buscar Endereço"
+            >
+              <span class="icon">&#128269;</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="modal-content">
+          <div class="address-row">
+            <label for="street">Logradouro:</label>
+            <input type="text" id="street" placeholder="Rua, Av." />
+          </div>
+          <div class="number-row">
+            <label for="number">Número:</label>
+            <input type="text" id="number" placeholder="Número" />
+          </div>
+        </div>
+
+        <div class="modal-content">
+          <div class="complement-row">
+            <label for="complement">Complemento:</label>
+            <input type="text" id="complement" placeholder="casa, apto ..." />
+          </div>
+        </div>
+
+        <div class="modal-content">
+          <div class="neighborhood-row">
+            <label for="neighborhood">Bairro:</label>
+            <input type="text" id="neighborhood" placeholder="Bairro" />
+          </div>
+          <div class="city-row">
+            <label for="city">Cidade:</label>
+            <input type="text" id="city" placeholder="Cidade" />
+          </div>
+          <div class="state-row">
+            <label for="state">UF:</label>
+            <input type="text" id="state" placeholder="UF" />
+          </div>
+        </div>
+
+        <div class="modal-content">
+          <div class="reference-row">
+            <label for="reference">Referência:</label>
+            <textarea
+              id="reference"
+              placeholder="Referência (opcional)"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+
+      <footer class="modal-footer">
+        <div class="modal-content">
+          <div class="buttons">
+            <button id="save-btn" class="styled-button">Salvar</button>
+            <!-- <button id="cancel-btn" class="styled-button">Cancelar</button> -->
+          </div>
+        </div>
+      </footer>
+
+      <!-- Botões para abrir no Google Maps e Waze -->
+      <div class="modal-content">
+        <div class="map-buttons">
+          <button id="open-maps" class="styled-button map-button">
+            <img
+              src="https://www.google.com/images/branding/product/2x/maps_96in128dp.png"
+              alt="Google Maps"
+            />
+          </button>
+          <button id="open-waze" class="styled-button waze-button">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSz6iTMDqiF2mrP_M2qnUFc149BazWsYCDzkMDl9gnrmoPx89S5CJ0xF51gYB-C2q_uVSo&usqp=CAU"
+              alt="Waze"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
