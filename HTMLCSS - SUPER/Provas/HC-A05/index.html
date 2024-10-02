@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Formulário de Registro</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <form action="#" method="post" class="formulario">
+        <h2>Registro de Informações Pessoais</h2>
+
+        <label for="nome">Nome:</label>
+        <input
+          type="text"
+          id="nome"
+          name="nome"
+          placeholder="Digite seu nome"
+          required
+        />
+
+        <label for="data-nascimento">Data de Nascimento:</label>
+        <input
+          type="date"
+          id="data-nascimento"
+          name="data-nascimento"
+          required
+        />
+
+        <label for="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="exemplo@dominio.com"
+          required
+        />
+
+        <label for="mensagem">Mensagem:</label>
+        <textarea
+          id="mensagem"
+          name="mensagem"
+          placeholder="Digite sua mensagem aqui..."
+          rows="4"
+          required
+        ></textarea>
+
+        <button type="submit">Enviar</button>
+      </form>
+    </div>
+  </body>
+</html>
