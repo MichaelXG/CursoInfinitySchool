@@ -8,6 +8,17 @@ const dateFormatOptions = {
   default: { weekday: "long" },
   short: { day: "2-digit", month: "2-digit", year: "numeric" },
 };
+
+const formatDate = (day, month, year, locale = "pt-BR") => {
+  // Ajuste no mês (em JavaScript, os meses são baseados em 0, então subtrai 1)
+  const date = new Date(year, month - 1, day);
+  return new Intl.DateTimeFormat(locale, {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(date);
+};
+
 //----------------------------------------
 const countries = [
   { code: "BR", flag: "flag-icon-br", name: "Brazil", locale: "pt-BR" },
@@ -357,7 +368,9 @@ async function generateCalendar(locale = "pt-BR", month, year) {
     const formattedYear = year.toString();
     const formattedDate = `${formattedYear}-${formattedMonth}-${formattedDay}`;
 
-    const events = schedules["[object PointerEvent]"];
+    const events = schedules[""];
+
+    console.log("events: ", events);
 
     if (events) {
       const eventsOnDate = events.filter(
@@ -700,6 +713,7 @@ document.addEventListener(
       }
     });
 
+    // clearSchedules();
     // Inicializa o calendário com o defaultLocale e defaultCountry
     setupCalendar();
     generateCalendar(defaultLocale);
@@ -708,19 +722,17 @@ document.addEventListener(
     setupEventListeners();
   }
 );
-
 function saveSchedulesToLocalStorage() {
   // Converte o objeto schedules em uma string JSON formatada
-  const formattedSchedules = JSON.stringify(schedules, null, 2); // O segundo parâmetro é o replacer e o terceiro é o número de espaços para identação
-
-  localStorage.setItem("schedules", formattedSchedules);
+  const formattedSchedules = JSON.stringify(schedules, null, 2); // O segundo parâmetro é o replacer e o terceiro é o número de espaços para indentação
+  localStorage.setItem("events", formattedSchedules);
   console.log("Eventos salvos com sucesso!");
   // Recarrega a página
   location.reload();
 }
 
 function loadSchedulesFromLocalStorage() {
-  const savedSchedules = localStorage.getItem("schedules");
+  const savedSchedules = localStorage.getItem("events");
   if (savedSchedules) {
     schedules = JSON.parse(savedSchedules);
     console.log("Eventos carregados com sucesso!");
@@ -733,13 +745,12 @@ function loadSchedulesFromLocalStorage() {
 
 function clearSchedules() {
   // Limpa o localStorage
-  localStorage.removeItem("schedules");
+  localStorage.removeItem("events");
 
   // Reinicia o objeto schedules
   schedules = {};
 
   console.log("Todos os eventos foram removidos com sucesso!");
-
   // Recarrega a página
   location.reload();
 }
@@ -748,12 +759,10 @@ function attachEventListeners() {
   document.querySelectorAll(".circle.orange.clickable").forEach((day) => {
     day.addEventListener("dblclick", (e) => {
       const date = e.target.closest("td").dataset.date;
-
       loadSchedulesFromLocalStorage();
+
       // Verifica se existem eventos associados à data
       const events = schedules[date] || [];
-
-      // Se houver eventos associados à data, tenta identificar o índice
       let scheduleIndex = null;
 
       // Percorre todos os elementos de eventos para encontrar o que foi clicado
@@ -770,7 +779,6 @@ function attachEventListeners() {
       if (scheduleIndex === null && events.length > 0) {
         scheduleIndex = 0;
       }
-      scheduleIndex = 1;
 
       // Exibe a data e o índice do evento no console para verificação
       console.log("Data selecionada:", date);
@@ -782,10 +790,71 @@ function attachEventListeners() {
   });
 }
 
-// Adiciona um evento de clique ao botão de adicionar evento
-document
-  .getElementById("add-event-button")
-  .addEventListener("click", openModal("", null));
+function saveSchedule(dateString, scheduleIndex) {
+  const dateStart = document.getElementById("date-start").value;
+  const dateEnd = document.getElementById("date-end").value;
+  const title = document.getElementById("title").value;
+  const description = document.getElementById("description").value;
+  const time = document.getElementById("time").value;
+  const alarm = document.getElementById("alarm").checked;
+
+  const address = {
+    cep: document.getElementById("cep").value,
+    street: document.getElementById("street").value,
+    number: document.getElementById("number").value,
+    neighborhood: document.getElementById("neighborhood").value,
+    city: document.getElementById("city").value,
+    state: document.getElementById("state").value,
+    reference: document.getElementById("reference").value,
+  };
+
+  // Determinando o ID (autoincremento)
+  let newId = 1; // Default to 1 if this is the first schedule for the day
+  if (schedules[dateString] && schedules[dateString].length > 0) {
+    newId = Math.max(...schedules[dateString].map((s) => s.id || 0)) + 1;
+  }
+
+  const schedule = {
+    id: newId, // Adicionando o ID autoincrementado
+    dateStart,
+    dateEnd,
+    title,
+    description,
+    time,
+    alarm,
+    address,
+  };
+
+  // Se o índice do agendamento não for nulo, significa que estamos atualizando um agendamento existente
+  if (scheduleIndex !== null) {
+    console.log(
+      `Atualizando agendamento no índice ${scheduleIndex} para a data ${dateString}`
+    );
+    schedules[dateString][scheduleIndex] = schedule;
+  } else {
+    console.log(`Criando novo agendamento para a data ${dateString}`);
+    if (!schedules[dateString]) {
+      schedules[dateString] = [];
+    }
+    schedules[dateString].push(schedule);
+  }
+
+  console.log("Agendamentos atualizados:", schedules);
+  saveSchedulesToLocalStorage();
+  console.log("Agendamento salvo com sucesso!");
+  closeModal();
+}
+
+function removeSchedule(dateString, scheduleIndex) {
+  if (schedules[dateString]) {
+    schedules[dateString].splice(scheduleIndex, 1);
+    if (schedules[dateString].length === 0) {
+      delete schedules[dateString];
+    }
+    saveSchedulesToLocalStorage();
+    generateCalendar(currentYear, currentMonth);
+  }
+}
 
 // Função para abrir o modal
 function openModal(dateString, scheduleIndex = null) {
@@ -876,16 +945,18 @@ function openModal(dateString, scheduleIndex = null) {
   document.getElementById("save-btn").onclick = () =>
     saveSchedule(dateString, scheduleIndex);
 
-  document.getElementById("cancel-btn").onclick = closeModal;
+  document.getElementById("cancel-btn").onclick = () => closeModal();
 }
 
 // Evento para abrir o modal em branco quando o botão de adicionar evento for clicado
 document.getElementById("add-event-button").onclick = () => {
+  console.log("Modal - add-event-button");
   openModal("", null); // Passa `null` para indicar que é um novo evento
 };
 
 // Supondo que você tenha um evento de clique nos dias do calendário
 function onDateClick(dateString, scheduleIndex) {
+  console.log("Modal - onDateClick");
   openModal(dateString, scheduleIndex); // Passa `scheduleIndex` para editar um evento existente
 }
 
@@ -916,107 +987,6 @@ document.addEventListener("keydown", function (event) {
 
 function closeModal() {
   document.getElementById("modal").style.display = "none";
-}
-
-function saveSchedule(dateString, scheduleIndex) {
-  const dateStart = document.getElementById("date-start").value;
-  const dateEnd = document.getElementById("date-end").value;
-
-  const title = document.getElementById("title").value;
-  const description = document.getElementById("description").value;
-  const time = document.getElementById("time").value;
-  const alarm = document.getElementById("alarm").checked;
-  const cep = document.getElementById("cep").value;
-  const street = document.getElementById("street").value;
-  const number = document.getElementById("number").value;
-  const neighborhood = document.getElementById("neighborhood").value;
-  const city = document.getElementById("city").value;
-  const state = document.getElementById("state").value;
-  const reference = document.getElementById("reference").value;
-
-  // Logging form values
-  console.log("Form values:", {
-    dateStart,
-    dateEnd,
-    title,
-    description,
-    time,
-    alarm,
-    cep,
-    street,
-    number,
-    neighborhood,
-    city,
-    state,
-    reference,
-  });
-
-  const address = {
-    cep,
-    street,
-    number,
-    neighborhood,
-    city,
-    state,
-    reference,
-  };
-
-  // Determining the ID (autoincrement)
-  let newId = 1; // Default to 1 if this is the first schedule for the day
-  if (schedules[dateString] && schedules[dateString].length > 0) {
-    // Find the highest existing ID in the schedule list for this date
-    newId = Math.max(...schedules[dateString].map((s) => s.id || 0)) + 1;
-  }
-
-  const schedule = {
-    id: newId, // Adding the autoincremented ID
-    dateStart,
-    dateEnd,
-    title,
-    description,
-    time,
-    alarm,
-    address,
-  };
-
-  // Logging the schedule object with ID
-  console.log("Schedule object:", schedule);
-
-  if (scheduleIndex !== null) {
-    // Logging the update action
-    console.log(
-      `Updating schedule at index ${scheduleIndex} for date ${dateString}`
-    );
-    schedules[dateString][scheduleIndex] = schedule;
-  } else {
-    // Logging the creation action
-    console.log(`Creating new schedule for date ${dateString}`);
-    if (!schedules[dateString]) {
-      schedules[dateString] = [];
-    }
-    schedules[dateString].push(schedule);
-  }
-
-  // Logging the updated schedules array
-  console.log("Updated schedules:", schedules);
-
-  saveSchedulesToLocalStorage();
-
-  // Logging the completion of the save process
-  console.log("Schedule saved successfully!");
-
-  closeModal();
-}
-
-function removeSchedule(dateString, scheduleIndex) {
-  if (schedules[dateString]) {
-    schedules[dateString].splice(scheduleIndex, 1);
-    if (schedules[dateString].length === 0) {
-      delete schedules[dateString];
-    }
-    saveSchedulesToLocalStorage();
-    generateCalendar(currentYear, currentMonth);
-  }
 }
 
 document.getElementById("search-btn").addEventListener("click", function () {
@@ -1076,22 +1046,13 @@ document.getElementById("open-waze").onclick = () => {
 };
 
 // ------------
-const formatDate = (day, month, year, locale = "pt-BR") => {
-  // Ajuste no mês (em JavaScript, os meses são baseados em 0, então subtrai 1)
-  const date = new Date(year, month - 1, day);
-  return new Intl.DateTimeFormat(locale, {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  }).format(date);
-};
 
 function handleDateClick(data) {
   console.log("Data clicada:", data); // Log da data clicada
 
   // Filtrar eventos do dia usando a estrutura de schedules
-  const eventosDoDia = schedules["[object PointerEvent]"]
-    ? schedules["[object PointerEvent]"].filter((evento) => {
+  const eventosDoDia = schedules[""]
+    ? schedules[""].filter((evento) => {
         console.log("Verificando evento:", evento); // Log do evento atual sendo verificado
         return evento.dateStart === data;
       })
@@ -1132,9 +1093,9 @@ function handleDateClick(data) {
 }
 
 // Fechar o modal se clicar fora da área do conteúdo
-window.onclick = function (event) {
-  const modal = document.getElementById("modal");
-  if (event.target === modal) {
-    closeModal();
-  }
-};
+// window.onclick = function (event) {
+//   const modal = document.getElementById("modal");
+//   if (event.target === modal) {
+//     closeModal();
+//   }
+// };
