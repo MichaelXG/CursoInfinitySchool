@@ -1,0 +1,124 @@
+/* Definindo variáveis CSS para cores e tipografia */
+:root {
+    --cor-primaria: #3498db;   /* Azul */
+    --cor-secundaria: #2ecc71;  /* Verde */
+    --cor-fundo: #f4f4f4;       /* Cinza Claro */
+    --cor-texto: #333333;       /* Preto */
+    --cor-acento: #e74c3c;      /* Vermelho */
+    --font-family: 'Poppins', sans-serif;
+}
+
+/* Reset de margens e preenchimento */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Corpo da página */
+body {
+    font-family: var(--font-family);
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Título Principal */
+h1 {
+    font-size: 5vw; /* Responsivo */
+    color: var(--cor-primaria);
+    font-weight: 600;
+}
+
+/* Seção Principal */
+main {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Títulos secundários */
+h2 {
+    font-size: 3rem;
+    color: var(--cor-secundaria);
+    margin-bottom: 1rem;
+}
+
+/* Texto da página */
+p {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: var(--cor-texto);
+    margin-bottom: 1.5rem;
+}
+
+/* Botão estilizado */
+.button {
+    background-color: var(--cor-secundaria);
+    color: #fff;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+/* Efeito hover para o botão */
+.button:hover {
+    background-color: var(--cor-acento);
+    transform: translateY(-3px);
+}
+
+/* Media Query para telas maiores */
+@media (min-width: 1024px) {
+    h1 {
+        font-size: 4vw;
+    }
+
+    h2 {
+        font-size: 2.5rem;
+    }
+}
+
+/* Media Query para dispositivos móveis */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 6vw; /* Fonte maior em telas menores */
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    .button {
+        padding: 0.8rem 1.5rem;
+    }
+}
+
+/* Efeito responsivo para dispositivos muito pequenos */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 8vw;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+}
