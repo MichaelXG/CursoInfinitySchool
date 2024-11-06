@@ -6,6 +6,7 @@
 // calcular o fatorial desse número e também a sequência de Fibonacci até aquele número. Isso ajudará os investidores a realizar análises
 // mais detalhadas sobre suas decisões financeiras.
 
+// Obs: executar como node js-A04.js
 
 // Cabeçalho
 console.log("=================================================");
